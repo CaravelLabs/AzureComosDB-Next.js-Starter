@@ -1,0 +1,12 @@
+jobs:
+  - job: "TerraformAuto"
+    displayName: "Terraform > install, init & apply"
+    steps:
+      - template: ../steps/terraform-init.yml
+
+      - task: TerraformCLI@1
+        inputs:
+          command: "apply"
+          workingDirectory: $(System.DefaultWorkingDirectory)/infra/src
+          environmentServiceName: "$(azure_subscription_connection)"
+        displayName: "Run > terraform apply"

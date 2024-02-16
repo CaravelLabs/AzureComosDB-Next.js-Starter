@@ -1,0 +1,12 @@
+name: 'production-build-release'
+
+trigger: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  - group: 'production'
+
+stages:
+  - template: ./templates/stages/build-release.yml

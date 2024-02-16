@@ -1,0 +1,59 @@
+stages:
+  - stage: "runCheckov"
+    displayName: "Checkov - Scan Terraform files"
+    jobs:
+      - template: ../jobs/run-checkov.yml
+
+  - stage: "validateTerraform"
+    displayName: "Terraform - Validate"
+    dependsOn:
+      - "runCheckov"
+    jobs:
+      - template: ../jobs/terraform-validate.yml
+
+  - stage: "planTerraform"
+    displayName: "Terraform - Plan"
+    dependsOn:
+      - "validateTerraform"
+    jobs:
+      - template: ../jobs/terraform-plan.yml
+
+  - stage: "autoTerraform"
+    displayName: "Terraform - Auto Approval"
+    dependsOn:
+      - "planTerraform"
+    condition: |
+      and
+        (
+          succeeded(),
+          eq(dependencies.planTerraform.outputs['TerraformJobs.setvar.HAS_CHANGES_ONLY'], 'true')
+        )
+    jobs:
+      - template: ../jobs/terraform-auto-approval.yml
+
+  - stage: "approveTerraform"
+    displayName: "Terraform - Manual Approval"
+    dependsOn:
+      - "planTerraform"
+    condition: |
+      and
+        (
+          succeeded(),
+          eq(dependencies.planTerraform.outputs['TerraformJobs.setvar.HAS_DESTROY_CHANGES'], 'true')
+        )
+    jobs:
+      - template: ../jobs/terraform-manual-approval.yml
+
+  - stage: "buildDeployCode"
+    displayName: "Code - Build, Deploy"
+    dependsOn:
+      - "approveTerraform"
+      - "autoTerraform"
+    condition: |
+      and
+        (
+           in(dependencies.approveTerraform.result, 'Succeeded', 'SucceededWithIssues', 'Skipped'),
+           in(dependencies.autoTerraform.result, 'Succeeded', 'SucceededWithIssues', 'Skipped')
+        )
+    jobs:
+          - template: ../jobs/web-build-deploy.yml

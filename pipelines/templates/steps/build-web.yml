@@ -1,0 +1,22 @@
+steps:
+  - bash: |
+      echo "##vso[task.setvariable variable=npm_config_cache]$(Pipeline.Workspace)/.npm"
+    displayName: "set npm_config_cache location"
+
+  - task: Cache@2
+    inputs:
+      key: 'npm | "$(Agent.OS)" | $(System.DefaultWorkingDirectory)/web/package-lock.json'
+      restoreKeys: |
+        npm | "$(Agent.OS)"
+      path: $(npm_config_cache)
+    displayName: Cache npm
+
+  - bash: |
+      cd web
+      npx npm@latest install -g npm@latest
+      npx npm@latest -v
+      npx npm@latest install 
+      npx npm@latest run build
+    displayName: "build /web"
+    env:
+      ANALYZE_BUNDLE: "false"

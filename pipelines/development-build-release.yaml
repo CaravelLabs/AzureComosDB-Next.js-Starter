@@ -1,0 +1,12 @@
+name: 'development-build-release'
+
+trigger: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  - group: 'development'
+
+stages:
+  - template: ./templates/stages/build-release.yml

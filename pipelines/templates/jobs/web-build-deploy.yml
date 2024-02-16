@@ -1,0 +1,9 @@
+jobs:
+  - job: WebBuildDeploy
+    displayName: Web > Build, Test, Package, Deploy
+    steps:
+      - template: ../steps/terraform-init.yml
+      - template: ../steps/get-infra-output.yml      
+      - template: ../steps/build-web.yml
+      - template: ../steps/publish-web.yml
+      - template: ../steps/deploy-web.yml

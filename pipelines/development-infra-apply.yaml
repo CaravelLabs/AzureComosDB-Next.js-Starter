@@ -1,0 +1,12 @@
+name: "development-infra-apply"
+
+trigger: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  - group: "development"
+
+jobs:
+  - template: ./templates/jobs/terraform-auto-approval.yml
