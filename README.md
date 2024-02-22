@@ -65,7 +65,7 @@ You can obtain the connection string by navigating to your Azure Cosmos DB accou
 
 ### High Level Technical Architecture
 
-![High Level Technical Design](https://ambitustemplateassets.blob.core.windows.net/assets/cosmos-todo.png?sp=r&st=2024-02-15T02:27:22Z&se=2029-12-31T10:27:22Z&sv=2022-11-02&sr=b&sig=LvRyc9VpN1P3p60Y2R8LPTGtRzW%2F8K9D0L9ZL%2B4kmBc%3D)
+<img src="https://ambitustemplateassets.blob.core.windows.net/assets/cosmos-todo.png?sp=r&st=2024-02-15T02:27:22Z&se=2029-12-31T10:27:22Z&sv=2022-11-02&sr=b&sig=LvRyc9VpN1P3p60Y2R8LPTGtRzW%2F8K9D0L9ZL%2B4kmBc%3D" width='100%' height='auto' />
 
 <br />
 
